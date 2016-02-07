@@ -2,7 +2,7 @@
 # Simple program that takes plaintext as input and illustrates interpretation
 # Written by Gautam Mittal
 # Mentor: Robert Cheung
-# Requires nltk.download()
+# Requires NLTK and its respective corpora
 
 import re
 import nltk
@@ -13,14 +13,22 @@ from textblob.parsers import PatternParser
 from contractions import *
 
 text = '''
-The boy couldn't throw very well.
+The quick brown fox jumped over the lazy dog.
 '''
 storyText = tb(text)
 
 def tokenize(string):
-    string = string.replace("\n", "").replace(".", "")
+    string = str(string.replace("\n", "").replace(".", "")).lower()
     words = string.split(" ")
-
+    for w in range(0, len(words)): # fix contractions
+        if (words[w].find("'") > -1):
+            if (words[w] in contractions):
+                replace_contract = contractions[words[w]]
+                words.pop(w)
+                r = list(reversed(replace_contract.split(" ")))
+                for cw in range(0, len(r)):
+                    words.insert(w, r[cw])
+            print(words)
 
 def prepare_text(stringBlob):
     if stringBlob.detect_language() != "en":
