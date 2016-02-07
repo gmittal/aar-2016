@@ -34,27 +34,17 @@ def tokenize(string):
 def prepare_text(stringBlob):
     if stringBlob.detect_language() != "en":
         stringBlob = stringBlob.translate(to="en")
-    stringBlob = tb(tokenize(stringBlob)
-    return(tb(stringBlob))
+    stringBlob = tokenize(stringBlob)
+    return stringBlob
 
 
 def analyze_semantics(sentenceBlob):
-    sentenceBlob = prepare_text(sentenceBlob)
-    print(sentenceBlob)
-    sentence_partsOfSpeech = sentenceBlob.tags
-
-    for w in range(0, len(sentenceBlob.words)):
-        current_word = sentenceBlob.words[w]
-
-        # verbs
-        if sentence_partsOfSpeech[w][1].find("VB") > -1:
-            lemmWord = sentenceBlob.words[w].lemmatize("v")
-            print(lemmWord)
+    s = tb(" ".join(prepare_text(sentenceBlob)))
+    return s.parse()
 
 def main():
     for sentence in storyText.sentences: # split text into sentences
-        print(tokenize(sentence))
-        # analyze_semantics(sentence)
+        print(analyze_semantics(sentence))
 
 
 if __name__ == "__main__":
