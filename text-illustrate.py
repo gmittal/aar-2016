@@ -13,7 +13,7 @@ from textblob.parsers import PatternParser
 from contractions import *
 
 text = '''
-The quick brown fox jumped over the lazy dog.
+The quick brown fox couldn't jump over the lazy dog.
 '''
 storyText = tb(text)
 
@@ -28,19 +28,17 @@ def tokenize(string):
                 r = list(reversed(replace_contract.split(" ")))
                 for cw in range(0, len(r)):
                     words.insert(w, r[cw])
-            print(words)
+    return words
+
 
 def prepare_text(stringBlob):
     if stringBlob.detect_language() != "en":
         stringBlob = stringBlob.translate(to="en")
-
-
-
-    # legit_w = [w for w in words if not w in stops]
+    stringBlob = tb(tokenize(stringBlob)
     return(tb(stringBlob))
 
 
-def analyze_semantics(sentenceBlob): # requires tb(STRING) to be passed
+def analyze_semantics(sentenceBlob):
     sentenceBlob = prepare_text(sentenceBlob)
     print(sentenceBlob)
     sentence_partsOfSpeech = sentenceBlob.tags
@@ -53,9 +51,11 @@ def analyze_semantics(sentenceBlob): # requires tb(STRING) to be passed
             lemmWord = sentenceBlob.words[w].lemmatize("v")
             print(lemmWord)
 
+def main():
+    for sentence in storyText.sentences: # split text into sentences
+        print(tokenize(sentence))
+        # analyze_semantics(sentence)
 
 
-# breaks the large text up into blob sized chunks
-for sentence in storyText.sentences:
-    print(tokenize(sentence))
-    # analyze_semantics(sentence)
+if __name__ == "__main__":
+    main()
