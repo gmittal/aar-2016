@@ -10,6 +10,7 @@ from nltk.corpus import stopwords
 from textblob import TextBlob as tb
 from textblob import Word as word
 from textblob.parsers import PatternParser
+from contractions import *
 
 text = '''
 John said "This is really awesome".
