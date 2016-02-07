@@ -13,18 +13,19 @@ from textblob.parsers import PatternParser
 from contractions import *
 
 text = '''
-John said "This is really awesome".
+The boy couldn't throw very well.
 '''
-storyText = tb(text).correct()
+storyText = tb(text)
+
+def tokenize(string):
+    string = string.replace("\n", "").replace(".", "")
+    words = string.split(" ")
+
 
 def prepare_text(stringBlob):
     if stringBlob.detect_language() != "en":
         stringBlob = stringBlob.translate(to="en")
 
-    stringBlob = re.sub("[^a-zA-Z]", " ", str(stringBlob))
-    stringBlob = re.sub("/([\"'])(?:(?=(\\?))\2.)*?\1/g", "", str(stringBlob))
-    print(stringBlob)
-    # words = stringBlob.lower()
 
 
     # legit_w = [w for w in words if not w in stops]
@@ -48,5 +49,5 @@ def analyze_semantics(sentenceBlob): # requires tb(STRING) to be passed
 
 # breaks the large text up into blob sized chunks
 for sentence in storyText.sentences:
-    print(prepare_text(sentence))
+    print(tokenize(sentence))
     # analyze_semantics(sentence)
