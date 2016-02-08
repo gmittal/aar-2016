@@ -14,15 +14,15 @@ from textblob.parsers import PatternParser
 from contractions import *
 
 text = '''
-In New York, The New York Times published their first article.
+The quick brown fox jumped over the lazy dog.
 '''
 storyText = tb(text)
 
 def tokenize(string):
-    string = str(string.replace("\n", "").replace(".", "")).lower()
+    string = str(string.replace("\n", ""))#.replace(".", ""))
     words = string.split(" ")
     for w in range(0, len(words)): # fix contractions
-        if (words[w].find("'") > -1):
+        if (words[w].lower().find("'") > -1):
             if (words[w] in contractions):
                 replace_contract = contractions[words[w]]
                 words.pop(w)
@@ -33,18 +33,23 @@ def tokenize(string):
 
 
 def prepare_text(stringBlob):
-    if stringBlob.detect_language() != "en":
+    if stringBlob.detect_language() != "en": # make text is in English
         stringBlob = stringBlob.translate(to="en")
     stringBlob = tokenize(stringBlob)
     return stringBlob
 
 
 def analyze_semantics(sentenceBlob):
-    simple_grammar = "NP: {<DT>?<JJ>*<NN>}"
+    grammar_model = r"""
+      NP: {<DT|JJ|NN.*>+}          # Chunk sequences of DT, JJ, NN
+      PP: {<IN><NP>}               # Chunk prepositions followed by NP
+      VP: {<VB.*><NP|PP|CLAUSE>+$} # Chunk verbs and their arguments
+      CLAUSE: {<NP><VP>}           # Chunk NP, VP
+      """
     tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
-    parser = nltk.RegexpParser(simple_grammar)
-    print(parser.parse(tagged_s))
-
+    parser = nltk.RegexpParser(grammar_model)
+    structure_tree = parser.parse(tagged_s) # sentence structure tree
+    return structure_tree
 
 def main():
     for sentence in storyText.sentences: # split text into sentences
