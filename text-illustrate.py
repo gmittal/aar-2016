@@ -6,6 +6,7 @@
 
 import re
 import nltk
+from nltk import CFG, ChartParser, RegexpParser
 from nltk.corpus import stopwords
 from textblob import TextBlob as tb
 from textblob import Word as word
@@ -13,7 +14,7 @@ from textblob.parsers import PatternParser
 from contractions import *
 
 text = '''
-The quick brown fox couldn't jump over the lazy dog.
+In New York, The New York Times published their first article.
 '''
 storyText = tb(text)
 
@@ -39,8 +40,12 @@ def prepare_text(stringBlob):
 
 
 def analyze_semantics(sentenceBlob):
-    s = tb(" ".join(prepare_text(sentenceBlob)))
-    return s.parse()
+    simple_grammar = "NP: {<DT>?<JJ>*<NN>}"
+
+    tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
+
+    parser = nltk.RegexpParser(simple_grammar)
+    print(parser.parse(tagged_s))
 
 def main():
     for sentence in storyText.sentences: # split text into sentences
