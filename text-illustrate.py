@@ -2,7 +2,7 @@
 # Simple program that takes plaintext as input and illustrates interpretation
 # Written by Gautam Mittal
 # Mentor: Robert Cheung
-# Requires NLTK and its respective corpora and MegaM
+# Requires NLTK and its respective corpora
 
 import re
 import nltk
@@ -12,12 +12,16 @@ from textblob import TextBlob as tb
 from textblob import Word as word
 from textblob.parsers import PatternParser
 from contractions import *
+
 train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP'])
 test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP'])
 
-
+# world's greatest story
 text = '''
-The quick brown fox decided to jump over the lazy dog. The boy thought the Superbowl was great. The crowd didn't love the event. Sometimes, programmers have trouble debugging code.
+The quick brown fox decided to jump over the lazy dog.
+The boy thought the Superbowl was great.
+The crowd didn't love the event.
+Sometimes, programmers have trouble debugging code.
 '''
 storyText = tb(text)
 
