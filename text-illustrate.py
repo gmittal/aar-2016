@@ -17,7 +17,7 @@ test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP'])
 
 
 text = '''
-The quick brown fox decided to jump over the lazy dog.
+The quick brown fox decided to jump over the lazy dog. The boy thought the Superbowl was great. The crowd didn't love the event.
 '''
 storyText = tb(text)
 
@@ -66,7 +66,7 @@ def analyze_semantics(sentenceBlob):
     #   VP: {<VB.*><NP|PP|CLAUSE>+$} # Chunk verbs and their arguments
     #   CLAUSE: {<NP><VP>}           # Chunk NP, VP
     #   """
-    # tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
+    tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
     # parser = nltk.RegexpParser(grammar_model)
     # structure_tree = parser.parse(tagged_s) # sentence structure tree
     # structure_tree.draw()
@@ -74,7 +74,8 @@ def analyze_semantics(sentenceBlob):
 
 
     unigram_chunker = UnigramChunker(train_sents)
-    print(unigram_chunker.evaluate(test_sents))
+    # print(unigram_chunker.evaluate(test_sents)) # UnigramChunker accuracy
+    return unigram_chunker.parse(tagged_s)
 
 def main():
     for sentence in storyText.sentences: # split text into sentences
