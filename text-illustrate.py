@@ -17,7 +17,7 @@ test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP'])
 
 
 text = '''
-The quick brown fox decided to jump over the lazy dog. The boy thought the Superbowl was great. The crowd didn't love the event.
+The quick brown fox decided to jump over the lazy dog. The boy thought the Superbowl was great. The crowd didn't love the event. Sometimes, programmers have trouble debugging code.
 '''
 storyText = tb(text)
 
@@ -35,7 +35,6 @@ class UnigramChunker(nltk.ChunkParserI):
         conlltags = [(word, pos, chunktag) for ((word,pos),chunktag)
                      in zip(sentence, chunktags)]
         return nltk.chunk.conlltags2tree(conlltags)
-
 
 
 def tokenize(string):
