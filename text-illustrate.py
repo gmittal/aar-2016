@@ -41,11 +41,10 @@ def prepare_text(stringBlob):
 
 def analyze_semantics(sentenceBlob):
     simple_grammar = "NP: {<DT>?<JJ>*<NN>}"
-
     tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
-
     parser = nltk.RegexpParser(simple_grammar)
     print(parser.parse(tagged_s))
+
 
 def main():
     for sentence in storyText.sentences: # split text into sentences
