@@ -15,7 +15,7 @@ from contractions import *
 
 # world's greatest story
 text = '''
-The quick brown fox decided to jump over the lazy dog.
+The quick brown fox jumped over the lazy dog.
 The boy thought the Superbowl was great.
 The crowd didn't love the event.
 Sometimes, programmers have trouble debugging code.
