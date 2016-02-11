@@ -94,8 +94,12 @@ def analyze_semantics(sentenceBlob):
             elif s.label() == "PP":
                 sent_pps.append({"n":n, "s": stringifyTree(s)})
 
-    print(sent_nps)
-    print(sent_vps)
+    extracted_info = {}
+    extracted_info["subject"] = sent_nps[0]["s"] # this isn't a good way of doing it, but works
+    extracted_info["verb"] = sent_vps[0]["s"] # bad way of doing it
+    extracted_info["object"] = sent_nps[1]["s"] # arrghh, buggy
+    extracted_info["action_context"] = sent_pps[0]["s"] if len(sent_pps) > 0 else "none" # ...
+    return extracted_info
 
 def main():
     for sentence in storyText.sentences: # split text into sentences
