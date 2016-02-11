@@ -19,6 +19,8 @@ The quick brown fox decided to jump over the lazy dog.
 The boy thought the Superbowl was great.
 The crowd didn't love the event.
 Sometimes, programmers have trouble debugging code.
+
+
 '''
 storyText = tb(text)
 
@@ -65,10 +67,35 @@ def prepare_text(stringBlob):
     stringBlob = tokenize(stringBlob)
     return stringBlob
 
+def stringifyTree(t):
+    s = []
+    for x in range(0, len(t)):
+        s.append(t[x][0])
+    return " ".join(s)
 
 def analyze_semantics(sentenceBlob):
     tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
-    return bigram_chunker.parse(tagged_s)[0]
+    sent_tree = bigram_chunker.parse(tagged_s)
+
+    # basic subject, predicate, object extraction
+    # for now, let's assume the first NP we find is the subject of the sentence
+    sent_nps = []
+    sent_vps = []
+    sent_pps = []
+
+    n = 0
+    for s in sent_tree:
+        if str(type(s)) != "<class 'tuple'>":
+            n += 1
+            if s.label() == "NP":
+                sent_nps.append({"n":n, "s": stringifyTree(s)})
+            elif s.label() == "VP":
+                sent_vps.append({"n":n, "s": stringifyTree(s)})
+            elif s.label() == "PP":
+                sent_pps.append({"n":n, "s": stringifyTree(s)})
+
+    print(sent_nps)
+    print(sent_vps)
 
 def main():
     for sentence in storyText.sentences: # split text into sentences
