@@ -1,10 +1,13 @@
 boto==2.39.0
 bz2file==0.98
+click==6.2
 gensim==0.12.3
 httpretty==0.8.10
 nltk==3.1
 numpy==1.10.4
+ordereddict==1.1
 protobuf==3.0.0a3
+python-dotenv==0.3.0
 requests==2.8.1
 scikit-learn==0.17
 scipy==0.17.0
