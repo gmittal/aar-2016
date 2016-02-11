@@ -1,5 +1,5 @@
 # AAR Natural Language Processing Project 2015-2016
-# Simple program that takes plaintext as input and illustrates interpretation
+# Takes plaintext as input and illustrates interpretation
 # Written by Gautam Mittal
 # Mentor: Robert Cheung
 # Requires NLTK and its respective corpora
