@@ -1,0 +1,28 @@
+{
+  "name": "aar-image-search",
+  "version": "1.0.0",
+  "description": "Image search.",
+  "main": "image_search.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmittal/aar-nlp-research-2016.git"
+  },
+  "keywords": [
+    "image",
+    "search",
+    "image",
+    "search"
+  ],
+  "author": "Gautam Mittal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gmittal/aar-nlp-research-2016/issues"
+  },
+  "homepage": "https://github.com/gmittal/aar-nlp-research-2016#readme",
+  "dependencies": {
+    "node-bing-api": "^2.3.0"
+  }
+}
