@@ -13,9 +13,6 @@ from textblob import Word as word
 from textblob.parsers import PatternParser
 from contractions import *
 
-train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP'])
-test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP'])
-
 # world's greatest story
 text = '''
 The quick brown fox decided to jump over the lazy dog.
@@ -26,11 +23,11 @@ Sometimes, programmers have trouble debugging code.
 storyText = tb(text)
 
 
-class UnigramChunker(nltk.ChunkParserI):
+class BigramChunker(nltk.ChunkParserI):
     def __init__(self, train_sents):
         train_data = [[(t,c) for w,t,c in nltk.chunk.tree2conlltags(sent)]
                       for sent in train_sents]
-        self.tagger = nltk.UnigramTagger(train_data)
+        self.tagger = nltk.BigramTagger(train_data)
 
     def parse(self, sentence):
         pos_tags = [pos for (word,pos) in sentence]
@@ -39,6 +36,12 @@ class UnigramChunker(nltk.ChunkParserI):
         conlltags = [(word, pos, chunktag) for ((word,pos),chunktag)
                      in zip(sentence, chunktags)]
         return nltk.chunk.conlltags2tree(conlltags)
+
+
+train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP', 'VP', 'PP'])
+test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP', 'VP', 'PP'])
+bigram_chunker = BigramChunker(train_sents)
+print(bigram_chunker.evaluate(test_sents)) # chunker accuracy
 
 
 def tokenize(string):
@@ -63,22 +66,8 @@ def prepare_text(stringBlob):
 
 
 def analyze_semantics(sentenceBlob):
-    # grammar_model = r"""
-    #   NP: {<DT|JJ|NN.*>+}          # Chunk sequences of DT, JJ, NN
-    #   PP: {<IN><NP>}               # Chunk prepositions followed by NP
-    #   VP: {<VB.*><NP|PP|CLAUSE>+$} # Chunk verbs and their arguments
-    #   CLAUSE: {<NP><VP>}           # Chunk NP, VP
-    #   """
     tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
-    # parser = nltk.RegexpParser(grammar_model)
-    # structure_tree = parser.parse(tagged_s) # sentence structure tree
-    # structure_tree.draw()
-    # return structure_tree
-
-
-    unigram_chunker = UnigramChunker(train_sents)
-    # print(unigram_chunker.evaluate(test_sents)) # UnigramChunker accuracy
-    return unigram_chunker.parse(tagged_s)
+    return bigram_chunker.parse(tagged_s)[0]
 
 def main():
     for sentence in storyText.sentences: # split text into sentences
