@@ -12,18 +12,8 @@ from textblob import TextBlob as tb
 from textblob import Word as word
 from textblob.parsers import PatternParser
 from contractions import *
-
-# world's greatest story
-text = '''
-The quick brown fox jumped over the lazy dog.
-The boy thought the Superbowl was great.
-The crowd didn't love the event.
-Sometimes, programmers have trouble debugging code.
-
-
-'''
-storyText = tb(text)
-
+train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP', 'VP', 'PP'])
+test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP', 'VP', 'PP'])
 
 class BigramChunker(nltk.ChunkParserI):
     def __init__(self, train_sents):
@@ -40,12 +30,8 @@ class BigramChunker(nltk.ChunkParserI):
                      in zip(sentence, chunktags)]
         return nltk.chunk.conlltags2tree(conlltags)
 
-
-train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP', 'VP', 'PP'])
-test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP', 'VP', 'PP'])
 bigram_chunker = BigramChunker(train_sents)
 print(bigram_chunker.evaluate(test_sents)) # chunker accuracy
-
 
 def tokenize(string):
     string = str(string.replace("\n", ""))#.replace(".", ""))
@@ -60,7 +46,6 @@ def tokenize(string):
                     words.insert(w, r[cw])
     return words
 
-
 def prepare_text(stringBlob):
     if stringBlob.detect_language() != "en": # make text is in English
         stringBlob = stringBlob.translate(to="en")
@@ -73,7 +58,7 @@ def stringifyTree(t):
         s.append(t[x][0])
     return " ".join(s)
 
-def analyze_semantics(sentenceBlob):
+def analyze_sent_semantics(sentenceBlob):
     tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
     sent_tree = bigram_chunker.parse(tagged_s)
 
@@ -97,14 +82,14 @@ def analyze_semantics(sentenceBlob):
     extracted_info = {}
     extracted_info["subject"] = sent_nps[0]["s"] # this isn't a good way of doing it, but works
     extracted_info["verb"] = sent_vps[0]["s"] # bad way of doing it
-    extracted_info["object"] = sent_nps[1]["s"] # arrghh, buggy
+    extracted_info["object"] = sent_nps[1]["s"] if len(sent_nps) > 1 else "none" # arrghh, buggy
     extracted_info["action_context"] = sent_pps[0]["s"] if len(sent_pps) > 0 else "none" # ...
     return extracted_info
 
-def main():
+def extract(storyString):
+    storyText = tb(storyString)
+    results = []
     for sentence in storyText.sentences: # split text into sentences
-        print(analyze_semantics(sentence))
+        results.append(analyze_sent_semantics(sentence))
 
-
-if __name__ == "__main__":
-    main()
+    return results
