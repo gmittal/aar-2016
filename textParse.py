@@ -62,12 +62,12 @@ def stringifyTree(t):
 def simplifyTree(t):
     if t.label() == "NP":
         for x in list(t):
-            print(x)
             if x[1].find("NN") == -1:
                 t.remove(x)
         return stringifyTree(t)
     elif t.label() == "VP":
-        for x in t:
+        print(list(t))
+        for x in list(t):
             if x[1].find("VB") == -1:
                 t.remove(x)
         return stringifyTree(t)
@@ -91,15 +91,16 @@ def analyze_sent_semantics(sentenceBlob):
                 sent_nps.append({"n":n, "s": stringifyTree(s), "simple": simplifyTree(s)})
             elif s.label() == "VP":
                 # print(s)
-                sent_vps.append({"n":n, "s": stringifyTree(s)})
+                sent_vps.append({"n":n, "s": stringifyTree(s), "simple": simplifyTree(s)})
             elif s.label() == "PP":
                 sent_pps.append({"n":n, "s": stringifyTree(s)})
 
     extracted_info = {}
     extracted_info["complex_subject"] = sent_nps[0]["s"] # this isn't a good way of doing it, but works
     extracted_info["simple_subject"] = sent_nps[0]["simple"]
-    extracted_info["verb"] = sent_vps[0]["s"] # bad way of doing it
-    extracted_info["object"] = sent_nps[1]["s"] if len(sent_nps) > 1 else "none" # arrghh, buggy
+    extracted_info["complex_verb"] = sent_vps[0]["s"] # bad way of doing it
+    extracted_info["simple_verb"] = sent_vps[0]["simple"]
+    extracted_info["complex_object"] = sent_nps[1]["s"] if len(sent_nps) > 1 else "none" # arrghh, buggy
     extracted_info["simple_object"] = sent_nps[1]["simple"] if len(sent_nps) > 1 else "none"
     extracted_info["action_context"] = sent_pps[0]["s"] if len(sent_pps) > 0 else "none" # ...
     return extracted_info
