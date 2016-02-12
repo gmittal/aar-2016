@@ -66,7 +66,7 @@ def simplifyTree(t):
                 t.remove(x)
         return stringifyTree(t)
     elif t.label() == "VP":
-        print(list(t))
+        # print(list(t))
         for x in list(t):
             if x[1].find("VB") == -1:
                 t.remove(x)
