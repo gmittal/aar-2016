@@ -53,6 +53,17 @@ def prepare_text(stringBlob):
     stringBlob = tokenize(stringBlob)
     return stringBlob
 
+def treeToJSON(t):
+    json = []
+    for p in list(t):
+        if str(type(p)) != "<class 'tuple'>":
+            phraseJSON = {
+                'label': p.label(),
+                'text': list(p)
+            }
+            json.append(phraseJSON)
+    return json
+
 def stringifyTree(t):
     s = []
     for x in range(0, len(t)):
@@ -75,36 +86,20 @@ def simplifyTree(t):
 def analyze_sent_semantics(sentenceBlob):
     tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
     sent_tree = bigram_chunker.parse(tagged_s)
+    sent_tree = treeToJSON(sent_tree) # convert to format that we can work with
 
-    # basic subject, predicate, object extraction
-    # for now, let's assume the first NP we find is the subject of the sentence
-    sent_nps = []
-    sent_vps = []
-    sent_pps = []
+    # verify the verb phrases
+    for p in range(0, len(sent_tree)):
+        phrase = sent_tree[p]
+        if phrase["label"] == "VP":
+            verbCount = 0
+            for w in phrase["text"]:
+                if w[1].find("VB") > -1:
+                    verbCount += 1
+            if verbCount == 0:
+                phrase["label"] = "PSEUDO-VP"
 
-    n = 0
     print(sent_tree)
-    for s in sent_tree:
-        if str(type(s)) != "<class 'tuple'>":
-            n += 1
-            if s.label() == "NP":
-                # print(s)
-                sent_nps.append({"n":n, "s": stringifyTree(s), "simple": simplifyTree(s)})
-            elif s.label() == "VP":
-                # print(s)
-                sent_vps.append({"n":n, "s": stringifyTree(s), "simple": simplifyTree(s)})
-            elif s.label() == "PP":
-                sent_pps.append({"n":n, "s": stringifyTree(s)})
-
-    # extracted_info = {}
-    # extracted_info["complex_subject"] = sent_nps[0]["s"] # this isn't a good way of doing it, but works
-    # extracted_info["simple_subject"] = sent_nps[0]["simple"]
-    # extracted_info["complex_verb"] = sent_vps[0]["s"] # bad way of doing it
-    # extracted_info["simple_verb"] = sent_vps[0]["simple"]
-    # extracted_info["complex_object"] = sent_nps[1]["s"] if len(sent_nps) > 1 else "none" # arrghh, buggy
-    # extracted_info["simple_object"] = sent_nps[1]["simple"] if len(sent_nps) > 1 else "none"
-    # extracted_info["action_context"] = sent_pps[0]["s"] if len(sent_pps) > 0 else "none" # ...
-    # return extracted_info
 
 def extract(storyString):
     storyText = tb(storyString)
