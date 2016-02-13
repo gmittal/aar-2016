@@ -99,7 +99,21 @@ def analyze_sent_semantics(sentenceBlob):
             if verbCount == 0:
                 phrase["label"] = "PSEUDO-VP"
 
-    print(sent_tree)
+    # print(sent_tree)
+
+    predicted_subject = []
+    for ph in range(0, len(sent_tree)):
+        p = sent_tree[ph]
+        # print(sent_tree[ph]["label"])
+        # print(sent_tree[ph-1]["label"])
+
+        if p["label"] == "NP" or (p["label"] == "PP" and (sent_tree[ph-1]["label"] == "NP" and ph-1 > -1)):
+            for t in p["text"]:
+                predicted_subject.append(t)
+        if p["label"] == "VP":
+            break;
+
+    print("Subject: " + stringifyTree(predicted_subject)) # what we think the subject might be
 
 def extract(storyString):
     storyText = tb(storyString)
