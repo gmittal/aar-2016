@@ -83,6 +83,7 @@ def analyze_sent_semantics(sentenceBlob):
     sent_pps = []
 
     n = 0
+    print(sent_tree)
     for s in sent_tree:
         if str(type(s)) != "<class 'tuple'>":
             n += 1
@@ -95,15 +96,15 @@ def analyze_sent_semantics(sentenceBlob):
             elif s.label() == "PP":
                 sent_pps.append({"n":n, "s": stringifyTree(s)})
 
-    extracted_info = {}
-    extracted_info["complex_subject"] = sent_nps[0]["s"] # this isn't a good way of doing it, but works
-    extracted_info["simple_subject"] = sent_nps[0]["simple"]
-    extracted_info["complex_verb"] = sent_vps[0]["s"] # bad way of doing it
-    extracted_info["simple_verb"] = sent_vps[0]["simple"]
-    extracted_info["complex_object"] = sent_nps[1]["s"] if len(sent_nps) > 1 else "none" # arrghh, buggy
-    extracted_info["simple_object"] = sent_nps[1]["simple"] if len(sent_nps) > 1 else "none"
-    extracted_info["action_context"] = sent_pps[0]["s"] if len(sent_pps) > 0 else "none" # ...
-    return extracted_info
+    # extracted_info = {}
+    # extracted_info["complex_subject"] = sent_nps[0]["s"] # this isn't a good way of doing it, but works
+    # extracted_info["simple_subject"] = sent_nps[0]["simple"]
+    # extracted_info["complex_verb"] = sent_vps[0]["s"] # bad way of doing it
+    # extracted_info["simple_verb"] = sent_vps[0]["simple"]
+    # extracted_info["complex_object"] = sent_nps[1]["s"] if len(sent_nps) > 1 else "none" # arrghh, buggy
+    # extracted_info["simple_object"] = sent_nps[1]["simple"] if len(sent_nps) > 1 else "none"
+    # extracted_info["action_context"] = sent_pps[0]["s"] if len(sent_pps) > 0 else "none" # ...
+    # return extracted_info
 
 def extract(storyString):
     storyText = tb(storyString)
