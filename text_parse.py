@@ -102,6 +102,7 @@ def analyze_sent_semantics(sentenceBlob):
     # print(sent_tree)
 
     predicted_subject = []
+    predicted_verb = str()
     for ph in range(0, len(sent_tree)):
         p = sent_tree[ph]
         # print(sent_tree[ph]["label"])
@@ -111,9 +112,12 @@ def analyze_sent_semantics(sentenceBlob):
             for t in p["text"]:
                 predicted_subject.append(t)
         if p["label"] == "VP":
+            predicted_verb = stringifyTree(p["text"])
             break;
 
     print("Subject: " + stringifyTree(predicted_subject)) # what we think the subject might be
+    print("Predicate: " + predicted_verb)
+
 
 def extract(storyString):
     storyText = tb(storyString)
