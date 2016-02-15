@@ -76,6 +76,7 @@ def simplifyTree(t):
             t.remove(x)
     return stringifyTree(t)
 
+
 def analyze_sent_semantics(sentenceBlob):
     tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
     sent_tree = bigram_chunker.parse(tagged_s)

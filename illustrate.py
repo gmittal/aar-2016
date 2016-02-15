@@ -15,7 +15,6 @@ dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 SEARCH_KEY = os.environ.get("BING_SEARCH_KEY")
 
-# search for an image using
 def getImageFromString(s):
     r = call(["node", "image_search.js", SEARCH_KEY, s])
     r = str(r)[:-3][2:]
