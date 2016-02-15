@@ -22,8 +22,8 @@ def getImageFromString(s):
 
 
 def main():
-    print(getImageFromString("dog"))
-    print(textEngine.extract("The quick brown fox jumped over the lazy dog. The story was amazing."))
+    svo = textEngine.extract("The quick brown fox jumped over the lazy dog. The story was amazing.")
+    print(svo)
 
 if __name__ == "__main__":
     main()
