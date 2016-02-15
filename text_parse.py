@@ -113,7 +113,6 @@ def analyze_sent_semantics(sentenceBlob):
                 predicted_subject.append(t)
         if p["label"] == "VP":
             predicted_verb = stringifyTree(p["text"])
-
             # iterate over everything after the predicate
             for o_i in range(ph, len(sent_tree)):
                 o = sent_tree[o_i]
@@ -121,6 +120,8 @@ def analyze_sent_semantics(sentenceBlob):
                 if o["label"] == "NP" or (o["label"] == "PP" and (sent_tree[o_i-1]["label"] == "NP" and o_i-1 > -1)):
                     predicted_actionable_noun = o["text"]
                     break
+                if o["label"] == "PP" and stringifyTree(sent_tree[o_i-1]["text"]) == predicted_verb:
+                    predicted_verb += " " + stringifyTree(o["text"])
 
             break
 
