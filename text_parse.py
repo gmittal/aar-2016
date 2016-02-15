@@ -107,28 +107,37 @@ def analyze_sent_semantics(sentenceBlob):
 
     for ph in range(0, len(sent_tree)):
         p = sent_tree[ph]
-
         if p["label"] == "NP" or (p["label"] == "PP" and (sent_tree[ph-1]["label"] == "NP" and ph-1 > -1)):
             for t in p["text"]:
                 predicted_subject.append(t)
         if p["label"] == "VP":
             predicted_verb = stringifyTree(p["text"])
+
             # iterate over everything after the predicate
             for o_i in range(ph, len(sent_tree)):
                 o = sent_tree[o_i]
-                print(o)
+
                 if o["label"] == "NP" or (o["label"] == "PP" and (sent_tree[o_i-1]["label"] == "NP" and o_i-1 > -1)):
                     predicted_actionable_noun = o["text"]
                     break
                 if o["label"] == "PP" and stringifyTree(sent_tree[o_i-1]["text"]) == predicted_verb:
                     predicted_verb += " " + stringifyTree(o["text"])
-
             break
 
+    # print("Subject: " + stringifyTree(predicted_subject)) # what we think the subject might be
+    # print("Predicate: " + predicted_verb)
+    # print("Object: " + stringifyTree(predicted_actionable_noun))
 
-    print("Subject: " + stringifyTree(predicted_subject)) # what we think the subject might be
-    print("Predicate: " + predicted_verb)
-    print("Object: " + stringifyTree(predicted_actionable_noun))
+    semantics_analysis = {
+        "raw_subject": stringifyTree(predicted_subject),
+        "simple_subject": simplifyTree(predicted_subject),
+        "predicate": predicted_verb,
+        "raw_object": stringifyTree(predicted_actionable_noun),
+        "simple_object": simplifyTree(predicted_actionable_noun)
+    }
+
+    return semantics_analysis
+
 
 def extract(storyString):
     storyText = tb(storyString)
