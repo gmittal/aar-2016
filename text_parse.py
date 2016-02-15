@@ -71,17 +71,10 @@ def stringifyTree(t):
     return " ".join(s)
 
 def simplifyTree(t):
-    if t.label() == "NP":
-        for x in list(t):
-            if x[1].find("NN") == -1:
-                t.remove(x)
-        return stringifyTree(t)
-    elif t.label() == "VP":
-        # print(list(t))
-        for x in list(t):
-            if x[1].find("VB") == -1:
-                t.remove(x)
-        return stringifyTree(t)
+    for x in list(t):
+        if x[1].find("NN") == -1:
+            t.remove(x)
+    return stringifyTree(t)
 
 def analyze_sent_semantics(sentenceBlob):
     tagged_s = tb(" ".join(prepare_text(sentenceBlob))).tags
