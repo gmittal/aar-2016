@@ -31,7 +31,7 @@ class BigramChunker(nltk.ChunkParserI):
         return nltk.chunk.conlltags2tree(conlltags)
 
 bigram_chunker = BigramChunker(train_sents)
-print(bigram_chunker.evaluate(test_sents)) # chunker accuracy
+print bigram_chunker.evaluate(test_sents) # chunker accuracy
 
 def tokenize(string):
     string = str(string.replace("\n", ""))#.replace(".", ""))
@@ -56,7 +56,7 @@ def prepare_text(stringBlob):
 def treeToJSON(t):
     json = []
     for p in list(t):
-        if str(type(p)) != "<class 'tuple'>":
+        if str(type(p)) != "<type 'tuple'>":
             phraseJSON = {
                 'label': p.label(),
                 'text': list(p)

@@ -25,7 +25,7 @@ def main():
     svo = textEngine.extract("Even aside from the rain and wind it hadn't been a happy practice session. Fred and George, who had been spying on the Slytherin team, had seen for themselves the speed of those new Nimbus Two Thousand and Ones. They reported that the Slytherin team was no more than seven greenish blurs, shooting through the air like missiles.")
 
     for scene in svo:
-        print(scene)
+        print scene
 
 if __name__ == "__main__":
     main()
