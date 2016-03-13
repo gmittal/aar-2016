@@ -25,24 +25,26 @@ girl scenario evident in films like Friday the 13th. It was filmed in Los Angele
  California and Malibu, California. Python was followed by two sequels: Python
  II (2002) and Boa vs. Python (2004), both also made-for-TV films.""")
 
-document2 = tb("""Python, from the Greek word, is a genus of
-nonvenomous pythons[2] found in Africa and Asia. Currently, 7 species are
-recognised.[2] A member of this genus, P. reticulatus, is among the longest
-snakes known.""")
-
-document3 = tb("""The Colt Python is a .357 Magnum caliber revolver formerly
-manufactured by Colt's Manufacturing Company of Hartford, Connecticut.
-It is sometimes referred to as a "Combat Magnum".[1] It was first introduced
-in 1955, the same year as Smith &amp; Wesson's M29 .44 Magnum. The now discontinued
-Colt Python targeted the premium revolver market segment. Some firearm
-collectors and writers such as Jeff Cooper, Ian V. Hogg, Chuck Hawks, Leroy
-Thompson, Renee Smeets and Martin Dougherty have described the Python as the
-finest production revolver ever made.""")
-
-bloblist = [document1, document2, document3]
+bloblist = document1.sentences
+relevance_scores = []
+relevancy = {}
 for i, blob in enumerate(bloblist):
-    print "Top words in document {}".format(i + 1)
+    # print "Top words in sentence " + str(i)
     scores = {word: tfidf(word, blob, bloblist) for word in blob.words}
     sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    for word, score in sorted_words[:3]:
-        print "\tWord: {}, TF-IDF: {}".format(word, round(score, 5))
+    relevance = 0
+    sum_relevancy = 0
+    for word, score in sorted_words:
+        # print "\tWord: {}, TF-IDF: {}".format(word, score)
+        sum_relevancy += score
+    relevance = sum_relevancy/len(sorted_words)
+    relevance_scores.append(relevance)
+    relevancy[str(i)] = relevance
+
+relevance_scores.sort(reverse=True)
+print relevance_scores
+
+for s in range(0, len(relevance_scores[:3])):
+    for key in relevancy:
+        if relevancy[key] == relevance_scores[s]:
+            print document1.sentences[int(key)]
