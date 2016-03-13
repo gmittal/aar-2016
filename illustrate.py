@@ -2,7 +2,7 @@
 # Takes plaintext as input and illustrates interpretation
 # Written by Gautam Mittal
 # Mentor: Robert Cheung
-# Requires Node.js and Python 3.4.6
+# Requires Node.js and Python 2.7
 # $ npm install && pip install -r requirements.txt
 
 
@@ -11,6 +11,7 @@ from os.path import join, dirname
 from subprocess import check_output as call
 from dotenv import load_dotenv
 import text_parse as textEngine
+import summarize as summaryEngine
 import json
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
