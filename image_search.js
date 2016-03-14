@@ -5,8 +5,8 @@
 // Written by Gautam Mittal
 
 var Bing = require('node-bing-api')({ accKey: process.argv[2] });
-var topResults = 10;
-Bing.images(process.argv[3] + "clip art png", {
+var topResults = 3;
+Bing.images(process.argv[3], {
   imageFilters: {
     // size: 'medium'
 

@@ -76,11 +76,24 @@ Just then, Goldilocks woke up and saw the three bears.  She screamed, "Help!"  A
 """
 
     summary = summaryEngine.summarize(raw_text)
-    print summary
-    svo = textEngine.extract(raw_text)
+    # print summary
+    svo = textEngine.extract(summary)
 
     for scene in svo:
-        print scene
+        print len(scene["simple_subject"])
+        if len(scene["simple_subject"]) != 0:
+            print "Subject: " + scene["raw_subject"]
+        else:
+            print "Subject: " + scene["simple_subject"]
+
+        print "Predicate: " + scene["predicate"]
+
+        if len(scene["simple_object"]) != 0:
+            print "Object: " + scene["raw_object"]
+        else:
+            print "Object: " + scene["simple_object"]
+
+
 
 if __name__ == "__main__":
     main()
