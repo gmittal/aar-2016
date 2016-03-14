@@ -77,7 +77,7 @@ Just then, Goldilocks woke up and saw the three bears.  She screamed, "Help!"  A
 
     summary = summaryEngine.summarize(raw_text)
     print summary
-    svo = textEngine.extract(summary)
+    svo = textEngine.extract(raw_text)
 
     for scene in svo:
         print scene

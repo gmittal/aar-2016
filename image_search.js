@@ -5,9 +5,11 @@
 // Written by Gautam Mittal
 
 var Bing = require('node-bing-api')({ accKey: process.argv[2] });
-
-Bing.images(process.argv[3], {
+var topResults = 10;
+Bing.images(process.argv[3] + "clip art png", {
   imageFilters: {
+    // size: 'medium'
+
     // style: 'graphics'
   }
 }, function(error, res, body){
@@ -20,7 +22,7 @@ Bing.images(process.argv[3], {
         urls.push(body["d"]["results"][i].MediaUrl);
       }
 
-      var randomIndex = Math.floor(Math.random() * urls.length) + 0;
+      var randomIndex = Math.floor(Math.random() * topResults) + 0;
       console.log(urls[randomIndex]);
   }
 
