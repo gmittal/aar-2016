@@ -6,13 +6,14 @@
 # $ npm install && pip install -r requirements.txt
 
 
-import os
+import os, json, uuid
 from os.path import join, dirname
 from subprocess import check_output as call
 from dotenv import load_dotenv
 import text_parse as textEngine
 import summarize as summaryEngine
-import json
+from PIL import Image
+from images2gif import writeGif
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 SEARCH_KEY = os.environ.get("BING_SEARCH_KEY")
@@ -21,6 +22,12 @@ def getImageFromString(s):
     r = call(["node", "image_search.js", SEARCH_KEY, s])
     r = str(r)[:-3][2:]
     return(r)
+
+def generateGIF(file_names, size):
+    for fn in file_names:
+        im = Image.open("/.tmp_images/"+fn)
+        im = im.resize(size, Image.ANTIALIAS)
+        im.save("./tmp_images/"+fn, "JPEG")
 
 
 def main():
