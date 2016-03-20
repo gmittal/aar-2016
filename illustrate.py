@@ -6,7 +6,7 @@
 # $ npm install && pip install -r requirements.txt
 
 
-import os, json, uuid
+import os, json, uuid, urllib, errno
 from os.path import join, dirname
 from subprocess import check_output as call
 from dotenv import load_dotenv
@@ -20,7 +20,8 @@ SEARCH_KEY = os.environ.get("BING_SEARCH_KEY")
 
 def getImageFromString(s):
     r = call(["node", "image_search.js", SEARCH_KEY, s])
-    r = str(r)[:-3][2:]
+    r = str(r)
+    r = r.replace("\n", "")
     return(r)
 
 def generateGIF(file_names, size):
@@ -29,8 +30,16 @@ def generateGIF(file_names, size):
         im = im.resize(size, Image.ANTIALIAS)
         im.save("./tmp_images/"+fn, "JPEG")
 
+def make_dir(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
 
 def main():
+    make_dir("./tmp_images")
+
     raw_text = """Once upon a time, there was a little girl named Goldilocks.  She  went for a walk in the forest.  Pretty soon, she came upon a house.  She knocked and, when no one answered, she walked right in.
 
 At the table in the kitchen, there were three bowls of porridge.  Goldilocks was hungry.  She tasted the porridge from the first bowl.
@@ -85,23 +94,40 @@ Just then, Goldilocks woke up and saw the three bears.  She screamed, "Help!"  A
     summary = summaryEngine.summarize(raw_text)
     print summary
     svo = textEngine.extract(summary)
-    #
+
     for scene in svo:
         print scene
-    #     print len(scene["simple_subject"])
-    #     if len(scene["simple_subject"]) != 0:
-    #         print "Subject: " + scene["raw_subject"]
-    #     else:
-    #         print "Subject: " + scene["simple_subject"]
-    #
-    #     print "Predicate: " + scene["predicate"]
-    #
-    #     if len(scene["simple_object"]) != 0:
-    #         print "Object: " + scene["raw_object"]
-    #     else:
-    #         print "Object: " + scene["simple_object"]
+        sent_subject = scene["raw_subject"] if len(scene["simple_subject"]) == 0 else scene["simple_subject"]
+        sent_object = scene["raw_object"] if len(scene["simple_object"]) == 0 else scene["simple_object"]
+        sent_predicate = scene["predicate"]
 
+        file_urls = {}
 
+        file_urls["subject"] = getImageFromString(sent_subject)
+        file_urls["verb"] = getImageFromString(sent_predicate)
+        if len(sent_object) != 0:
+            file_urls["object"] = getImageFromString(sent_object)
+
+        print file_urls
+        u_id = str(uuid.uuid4())
+        for class_id in file_urls:
+            url = file_urls[class_id]
+            number = 0
+            if class_id == "subject":
+                number = 1
+            elif class_id == "verb":
+                number = 2
+            elif class_id == "object":
+                number = 3
+
+            extension = url.split(".")[len(url.split("."))-1]
+            make_dir("./tmp_images/"+u_id)
+            urllib.urlretrieve(url, "./tmp_images/"+u_id+"/"+class_id+str(number)+"."+extension)
+
+            # im = Image.open(r"C:\jk.png")
+            # bg = Image.new("RGB", im.size, (255,255,255))
+            # bg.paste(im,im)
+            # bg.save(r"C:\jk2.jpg")
 
 if __name__ == "__main__":
     main()
