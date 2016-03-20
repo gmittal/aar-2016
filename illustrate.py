@@ -17,6 +17,7 @@ from images2gif import writeGif
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 SEARCH_KEY = os.environ.get("BING_SEARCH_KEY")
+dl = urllib.URLopener()
 
 def getImageFromString(s):
     r = call(["node", "image_search.js", SEARCH_KEY, s])
@@ -118,6 +119,7 @@ Just then, Goldilocks woke up and saw the three bears.  She screamed, "Help!"  A
         make_dir("./tmp_images/"+u_id)
 
         for class_id in file_urls:
+            print class_id
             url = file_urls[class_id]
             number = 0
             if class_id == "subject":
@@ -128,7 +130,7 @@ Just then, Goldilocks woke up and saw the three bears.  She screamed, "Help!"  A
                 number = 3
 
             extension = url.split(".")[len(url.split("."))-1]
-            urllib.urlretrieve(url, "./tmp_images/"+u_id+"/"+class_id+str(number)+"."+extension)
+            dl.retrieve(url, "./tmp_images/"+u_id+"/"+str(number)+"."+extension)
 
         # for n in os.listdir('./tmp_images/'+u_id):
         #     im = Image.open('./tmp_images/'+u_id+"/"+n)
