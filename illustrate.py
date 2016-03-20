@@ -24,11 +24,14 @@ def getImageFromString(s):
     r = r.replace("\n", "")
     return(r)
 
-def generateGIF(file_names, size):
+def generateGIF(file_names, size, uid):
     for fn in file_names:
-        im = Image.open("/.tmp_images/"+fn)
+        im = Image.open("./tmp_images/"+uid+"/"+fn)
         im = im.resize(size, Image.ANTIALIAS)
-        im.save("./tmp_images/"+fn, "JPEG")
+        im.save("./tmp_images/"+uid+"/"+fn, "JPEG")
+
+    images = [Image.open("./tmp_images/"+uid+"/"+fn) for fn in file_names]
+    writeGif("./tmp_images/"+uid+".gif", images, duration=0.5)
 
 def make_dir(path):
     try:
@@ -96,7 +99,7 @@ Just then, Goldilocks woke up and saw the three bears.  She screamed, "Help!"  A
     svo = textEngine.extract(summary)
 
     for scene in svo:
-        print scene
+        # print scene
         sent_subject = scene["raw_subject"] if len(scene["simple_subject"]) == 0 else scene["simple_subject"]
         sent_object = scene["raw_object"] if len(scene["simple_object"]) == 0 else scene["simple_object"]
         sent_predicate = scene["predicate"]
@@ -106,10 +109,14 @@ Just then, Goldilocks woke up and saw the three bears.  She screamed, "Help!"  A
         file_urls["subject"] = getImageFromString(sent_subject)
         file_urls["verb"] = getImageFromString(sent_predicate)
         if len(sent_object) != 0:
+            # print "OBJECT"
             file_urls["object"] = getImageFromString(sent_object)
 
-        print file_urls
+        file_paths = []
+
         u_id = str(uuid.uuid4())
+        make_dir("./tmp_images/"+u_id)
+
         for class_id in file_urls:
             url = file_urls[class_id]
             number = 0
@@ -121,13 +128,17 @@ Just then, Goldilocks woke up and saw the three bears.  She screamed, "Help!"  A
                 number = 3
 
             extension = url.split(".")[len(url.split("."))-1]
-            make_dir("./tmp_images/"+u_id)
             urllib.urlretrieve(url, "./tmp_images/"+u_id+"/"+class_id+str(number)+"."+extension)
 
-            # im = Image.open(r"C:\jk.png")
-            # bg = Image.new("RGB", im.size, (255,255,255))
-            # bg.paste(im,im)
-            # bg.save(r"C:\jk2.jpg")
+        # for n in os.listdir('./tmp_images/'+u_id):
+        #     im = Image.open('./tmp_images/'+u_id+"/"+n)
+        #     bg = Image.new("RGB", im.size, (255,255,255))
+        #     bg.paste(im,im)
+        #     bg.save("./tmp_images/"+u_id+"/"+str(n.split(".")[0])+".jpg", "JPEG")
+
+        file_paths = sorted((fn for fn in os.listdir('./tmp_images/'+u_id)))
+        print file_paths
+        generateGIF(file_paths, (400, 400), u_id)
 
 if __name__ == "__main__":
     main()
