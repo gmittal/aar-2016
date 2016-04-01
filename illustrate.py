@@ -6,7 +6,7 @@
 # $ npm install && pip install -r requirements.txt
 
 
-import os, json, uuid, urllib, errno
+import os, json, uuid, urllib, errno, requests
 from os.path import join, dirname
 from subprocess import check_output as call
 from dotenv import load_dotenv
@@ -24,6 +24,9 @@ def getImageFromString(s):
     r = str(r)
     r = r.replace("\n", "")
     return(r)
+
+
+
 
 def generateGIF(file_names, size, uid):
     for fn in file_names:
