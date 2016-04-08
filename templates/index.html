@@ -80,10 +80,6 @@ This is a story about how my life got flipped and turned upside down. This is yo
       var doneTypingInterval = 1000;
       var typingTimer;
 
-      $(document).ready(function() {
-          setTimeout(doneTyping, 2000); // wait after 2 seconds
-      });
-
       $('#playgroundInput').keyup(function() {
           clearTimeout(typingTimer);
           typingTimer = setTimeout(doneTyping, doneTypingInterval);

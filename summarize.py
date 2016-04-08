@@ -42,6 +42,8 @@ def summarize(document1):
 
     final_sentences = []
     num_top_results = 3
+    if len(bloblist) < 3:
+        num_top_results = 1
     for s in range(0, len(relevance_scores[:num_top_results])):
         for key in relevancy:
             if relevancy[key] == relevance_scores[s]:
