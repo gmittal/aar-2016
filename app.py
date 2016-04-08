@@ -6,6 +6,10 @@ from illustrate import *
 def home_main():
     return render_template('index.html')
 
+@app.route("/tellMeAStory", methods=["GET"])
+def storyTime():
+    return render_template('example_story.txt')
+
 # The magic endpoint
 @app.route("/illustrate", methods=["GET", "POST"])
 def illustrate():

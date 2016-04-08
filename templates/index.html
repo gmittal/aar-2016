@@ -68,7 +68,7 @@ This is a story about how my life got flipped and turned upside down. This is yo
         <div id="summaryOutput">A very concise summary.</div>
         <br />
         <p>Pretty interesting, no? But this is just a summary. The computer doesn't actually know what any of this means. Let's pass the text through a <b>parser</b> that I've hacked together to try and <b>glean</b> some more interesting features:</p>
-        <pre id="apiOutput"></pre>
+        <pre id="apiOutput">Console output</pre>
         <p>Now we're getting somewhere! The computer doesn't necessarily "understand" what the text means, but we've gotten one step closer, and there's definitely a ton of useful things we can do with this information. Such as <b>drawing diagrams or generating fun little GIFs</b> to reinforce meaning (this example is especially applicable when generating children's storybook illustrations).</p>
 
         <div id="rawDiagramOutput"></div>
@@ -89,16 +89,26 @@ This is a story about how my life got flipped and turned upside down. This is yo
           typingTimer = setTimeout(doneTyping, doneTypingInterval);
       });
 
-      //on keydown, clear the countdown
       $('#playgroundInput').keydown(function() {
           clearTimeout(typingTimer);
       });
 
+      $("#goldilocksDemo").click(function() {
+          $.get("/tellMeAStory", function (data, err) {
+            $("#playgroundInput").val(data);
+            doneTyping();
+          });
+      });
+
+      function generateDiagrams(svo_data) {
+        // raw diagrams by the API
+
+      }
 
       function doneTyping() {
         $.ajax({
             type: 'POST',
-            url: "http://gm-aar2016.ngrok.io/illustrate",
+            url: "/illustrate",
             data: {
                 "text_body": $("#playgroundInput").val().replace("\n", ""),
             },
@@ -109,6 +119,7 @@ This is a story about how my life got flipped and turned upside down. This is yo
                 console.log(data);
                 $("#apiOutput").text(JSON.stringify(data, null, 2));
                 $("#summaryOutput").text(capitalizeFirstLetter(data["summary"]));
+                generateDiagrams(data);
             },
             dataType: "json"
         });
