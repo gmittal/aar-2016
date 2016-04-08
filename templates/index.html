@@ -80,6 +80,7 @@ This is a story about how my life got flipped and turned upside down. This is yo
     </div>
     <script src="https://cdn.rawgit.com/orderedlist/minimal/master/javascripts/scale.fix.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/yahoo/gifshot/master/build/gifshot.min.js"></script>
     <script>
       var doneTypingInterval = 1000;
       var typingTimer;
@@ -100,8 +101,56 @@ This is a story about how my life got flipped and turned upside down. This is yo
           });
       });
 
+      var i = 0;
       function generateDiagrams(svo_data) {
         // raw diagrams by the API
+        // svo_data["svo_data"].length
+        $("#rawDiagramOutput").html("");
+        loopHack();
+
+        function loopHack() {
+
+          var frames = [];
+          alert(i);
+          frames[0] = svo_data["svo_data"][i]["subject"]["image"];
+          frames[1] = svo_data["svo_data"][i]["verb"]["image"];
+          frames[2] = svo_data["svo_data"][i]["object"]["image"];
+          for (var j = 0; j < frames.length; j++) {
+            if (frames[j] == "undefined") {
+              frames.splice(j, 1);
+            }
+          }
+
+          sent_num = i;
+
+          frames = cleanArray(frames);
+
+          for (var k = 0; k < frames.length; k++) {
+            frames[k] = "http://crossorigin.me/" + frames[k];
+          }
+
+          // alert(JSON.stringify(frames));
+          gifshot.createGIF({
+              'images': frames,
+              'interval': 1,
+              'gifWidth': 300,
+              'gifHeight': 200
+          },function(obj) {
+              if(!obj.error) {
+                if (i < svo_data["svo_data"].length) {
+                  var image = obj.image,
+                  animatedImage = document.createElement('img');
+                  animatedImage.src = image;
+                  $("#rawDiagramOutput").append("<p>"+capitalizeFirstLetter(svo_data["summary"].split(".")[sent_num])+":</p><img src=\""+ image +"\"/>");
+                  i++;
+                  loopHack();
+              } else {
+                alert("HELLO");
+              }
+            }
+          });
+
+        } // end loop
 
       }
 
@@ -127,6 +176,16 @@ This is a story about how my life got flipped and turned upside down. This is yo
 
       function capitalizeFirstLetter(string) {
           return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
+      function cleanArray(actual) {
+        var newArray = new Array();
+        for (var i = 0; i < actual.length; i++) {
+          if (actual[i]) {
+            newArray.push(actual[i]);
+          }
+        }
+        return newArray;
       }
 
     </script>
