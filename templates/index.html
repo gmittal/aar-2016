@@ -104,14 +104,16 @@ This is a story about how my life got flipped and turned upside down. This is yo
       var i = 0;
       function generateDiagrams(svo_data) {
         // raw diagrams by the API
-        // svo_data["svo_data"].length
         $("#rawDiagramOutput").html("");
         loopHack();
 
         function loopHack() {
+          if (i == svo_data["svo_data"].length){ // super hacky, don't learn to code like this
+            i = 0;
+            return;
+          }
 
           var frames = [];
-          alert(i);
           frames[0] = svo_data["svo_data"][i]["subject"]["image"];
           frames[1] = svo_data["svo_data"][i]["verb"]["image"];
           frames[2] = svo_data["svo_data"][i]["object"]["image"];
@@ -129,7 +131,6 @@ This is a story about how my life got flipped and turned upside down. This is yo
             frames[k] = "http://crossorigin.me/" + frames[k];
           }
 
-          // alert(JSON.stringify(frames));
           gifshot.createGIF({
               'images': frames,
               'interval': 1,
@@ -141,12 +142,10 @@ This is a story about how my life got flipped and turned upside down. This is yo
                   var image = obj.image,
                   animatedImage = document.createElement('img');
                   animatedImage.src = image;
-                  $("#rawDiagramOutput").append("<p>"+capitalizeFirstLetter(svo_data["summary"].split(".")[sent_num])+":</p><img src=\""+ image +"\"/>");
+                  $("#rawDiagramOutput").append("<p><i><b>"+capitalizeFirstLetter(svo_data["summary"].split(".")[sent_num])+":</b></i></p><img src=\""+ image +"\"/><br /><br />");
                   i++;
                   loopHack();
-              } else {
-                alert("HELLO");
-              }
+                 }
             }
           });
 
