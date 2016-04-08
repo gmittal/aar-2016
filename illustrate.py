@@ -42,9 +42,7 @@ def make_dir(path):
         if exception.errno != errno.EEXIST:
             raise
 
-def illustrate(raw_text):
-    make_dir("./tmp_images")
-
+def genTextMetrics(raw_text):
     summary = summaryEngine.summarize(raw_text)
     svo = textEngine.extract(summary)
 
