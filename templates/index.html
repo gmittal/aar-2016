@@ -66,7 +66,7 @@ This is a story about how my life got flipped and turned upside down. This is yo
 
         <div id="summaryOutput">A very concise summary.</div>
         <br />
-        <p>Pretty interesting, no? But this is just a summary. The computer doesn't actually know what any of this means. Let's pass the text through a parser that I've hacked together to try and glean some more interesting features:</p>
+        <p>Pretty interesting, no? But this is just a summary. The computer doesn't actually know what any of this means. Let's pass the text through a <b>parser</b> that I've hacked together to try and <b>glean</b> some more interesting features:</p>
         <pre id="apiOutput"></pre>
 
       </section>
@@ -75,23 +75,48 @@ This is a story about how my life got flipped and turned upside down. This is yo
       </footer>
     </div>
     <script src="https://cdn.rawgit.com/orderedlist/minimal/master/javascripts/scale.fix.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script>
+      var doneTypingInterval = 1000;
+      var typingTimer;
 
-            $.ajax({
-                type: 'POST',
-                url: "http://gm-aar2016.ngrok.io/illustrate",
-                data: {
-                    "id": project_id,
-                },
-                error: function(err) {
-                    console.log(err);
-                },
-                success: function(data) {
-                    console.log(data);
+      $(document).ready(function() {
+          setTimeout(doneTyping, 2000); // wait after 2 seconds
+      });
 
-                },
-                dataType: "json"
-            });
+      $('#playgroundInput').keyup(function() {
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(doneTyping, doneTypingInterval);
+      });
+
+      //on keydown, clear the countdown
+      $('#playgroundInput').keydown(function() {
+          clearTimeout(typingTimer);
+      });
+
+
+      function doneTyping() {
+        $.ajax({
+            type: 'POST',
+            url: "http://gm-aar2016.ngrok.io/illustrate",
+            data: {
+                "text_body": $("#playgroundInput").val().replace("\n", ""),
+            },
+            error: function(err) {
+                console.log(err);
+            },
+            success: function(data) {
+                console.log(data);
+                $("#apiOutput").text(JSON.stringify(data, null, 2));
+                $("#summaryOutput").text(capitalizeFirstLetter(data["summary"]));
+            },
+            dataType: "json"
+        });
+      }
+
+      function capitalizeFirstLetter(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+      }
 
     </script>
   </body>
