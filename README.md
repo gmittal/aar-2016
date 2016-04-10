@@ -16,8 +16,9 @@ BING_SEARCH_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 You can obtain a Bing Search API key [here](http://www.bing.com/toolbox/bingsearchapi).
 
-Enter the Python virtual environment:
+Create a new Python 2.7 virtual environment and activate it:
 ```shell
+$ virtualenv venv
 $ source venv/bin/activate
 ```
 
