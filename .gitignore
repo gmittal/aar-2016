@@ -3,3 +3,4 @@ __pycache__
 .env
 node_modules
 tmp_images
+venv

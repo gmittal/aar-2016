@@ -1,4 +1,4 @@
-#!/home/ubuntu/aar-nlp-research-2016/venv/bin/python
+#!/home/ubuntu/projects/aar-nlp-research-2016/venv/bin/python
 from boto.manage.server import Server
 if __name__ == "__main__":
     from optparse import OptionParser

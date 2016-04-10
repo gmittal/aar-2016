@@ -1,4 +1,4 @@
-#!/home/ubuntu/aar-nlp-research-2016/venv/bin/python
+#!/home/ubuntu/projects/aar-nlp-research-2016/venv/bin/python
 
 import sys
 from operator import attrgetter
