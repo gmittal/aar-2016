@@ -25,6 +25,7 @@ $ source venv/bin/activate
 Install all of the dependencies and corpora:
 ```shell
 $ pip install -r requirements.txt
+$ npm install
 $ python -m textblob.download_corpora
 $ python
 Python 2.7.6 (default, Jun 22 2015, 17:58:13)
