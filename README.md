@@ -22,9 +22,24 @@ $ virtualenv venv
 $ source venv/bin/activate
 ```
 
-Install all of the dependencies:
+Install all of the dependencies and corpora:
 ```shell
 $ pip install -r requirements.txt
+$ python -m textblob.download_corpora
+$ python
+Python 2.7.6 (default, Jun 22 2015, 17:58:13)
+[GCC 4.8.2] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import nltk
+>>> nltk.download()
+NLTK Downloader
+---------------------------------------------------------------------------
+    d) Download   l) List    u) Update   c) Config   h) Help   q) Quit
+---------------------------------------------------------------------------
+Downloader> d                                                                                                     
+Download which package (l=list; x=cancel)?                                                                              ubuntu@ip-172-31-0-157:~$
+  Identifier> all-corpora
+    Downloading collection u'all-corpora'
 ```
 
 Finally, run the webserver:
