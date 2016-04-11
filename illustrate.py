@@ -12,7 +12,6 @@ from subprocess import check_output as call
 from dotenv import load_dotenv
 import text_parse as textEngine
 import summarize as summaryEngine
-from PIL import Image
 from images2gif import writeGif
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
