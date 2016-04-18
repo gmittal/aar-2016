@@ -50,7 +50,7 @@ $ python app.py
 
 This will start the Flask server, but it will only be internally accessible from your machine. If you want to allow remote source to externally connect to your server, you'll have to open a localhost tunnel via [```ngrok```](https://ngrok.com/).
 ```shell
-$ ngrok http 5000
+$ ngrok http 4007
 ```
 
 
