@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 from illustrate import *
+import os
+
+os.system('python -m textblob.download_corpora')
 
 @app.route("/", methods=["GET"])
 def home_main():
