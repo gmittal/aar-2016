@@ -12,6 +12,7 @@ Flask==0.10.1
 funcsigs==1.0.2
 Google-Search-API==1.1.13
 grip==3.3.0
+gunicorn==19.7.1
 httpretty==0.8.10
 idna==2.0
 imagesoup==0.1.0
