@@ -15,15 +15,14 @@ import summarize as summaryEngine
 from images2gif import writeGif
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-SEARCH_KEY = os.environ.get("BING_SEARCH_KEY")
 dl = urllib.URLopener()
+from imagesoup import ImageSoup
+
+soup = ImageSoup()
 
 def getImageFromString(s):
-    r = call(["node", "image_search.js", SEARCH_KEY, s])
-    r = str(r)
-    r = r.replace("\n", "")
-    return(r)
-
+    images = soup.search('"'+ s +'"', n_images=1)
+    return images[0].URL
 
 def generateGIF(file_names, size, uid):
     for fn in file_names:
