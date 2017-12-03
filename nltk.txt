@@ -1,1 +1,2 @@
-all-corpora
+stopwords
+conll2000
