@@ -45,5 +45,5 @@ Unidecode==0.4.21
 urwid==1.3.0
 vcrpy==1.11.1
 webcolors==1.7
-Werkzeug==0.10.4
+Werkzeug==0.15.3
 wrapt==1.10.11
