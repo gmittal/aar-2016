@@ -33,7 +33,7 @@ protobuf==3.0.0b2
 pyasn1==0.1.7
 pycparser==2.13
 Pygments==2.0.2
-pyOpenSSL==0.15.1
+pyOpenSSL==17.5.0
 python-dotenv==0.3.0
 PyYAML==3.12
 requests==2.8.1
