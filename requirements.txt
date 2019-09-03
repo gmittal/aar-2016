@@ -7,7 +7,7 @@ ConfigArgParse==0.9.3
 contextlib2==0.5.5
 docopt==0.6.2
 enum34==1.0.4
-Flask==0.10.1
+Flask==1.0
 funcsigs==1.0.2
 Google-Search-API==1.1.13
 grip==3.3.0
