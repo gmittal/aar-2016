@@ -28,7 +28,7 @@ ordereddict==1.1
 passlib==1.6.2
 path-and-address==1.0.0
 pbr==3.1.1
-Pillow==4.3.0
+Pillow==6.2.0
 protobuf==3.0.0b2
 pyasn1==0.1.7
 pycparser==2.13
